@@ -27,9 +27,8 @@ jobs:
         with:
           # role yg sudah kita buat, kita copy ARN valuenya
           role-to-assume: arn:aws:iam::746669222274:role/GitHubOIDCRoleS3
-          role-session-name: GitHubActions-Backend-${{ github.run_id }}
+          #role-session-name: GitHubActions-Backend-${{ github.run_id }}
           aws-region: "us-east-1"
       # create bucket S3
       - name: Create S3
-        run: |
-          aws s3api create-bucket --bucket test-GithubBucket-2026 --region us-east-1
+        run: aws s3api create-bucket --bucket test-GithubBucket-2026 --region us-east-1
