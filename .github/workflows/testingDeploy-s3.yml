@@ -31,4 +31,4 @@ jobs:
           aws-region: "us-east-1"
       # create bucket S3
       - name: Create S3
-        run: aws s3api create-bucket --bucket test-GithubBucket-2026 --region us-east-1
+        run: aws s3api create-bucket --bucket test-githubbucket-2026 --region us-east-1
