@@ -19,15 +19,9 @@ jobs:
     runs-on: ubuntu-latest
  
     steps:
-      
-      - uses: actions/checkout@v4
-
-      # Runs a single command using the runners shell
-      - name: Display timestam of deployment
-        run: |     
-         echo "// Updating timestamp for deployment on $(date)" >> js/script.js
-         echo "// Deployment ID: ${{ github.run_id }}" >> js/script.js
-
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      #configure AWS credential  
       - name: Configure AWS credential dengan  OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -35,6 +29,7 @@ jobs:
           role-to-assume: arn:aws:iam::746669222274:role/GitHubOIDCRoleS3
           role-session-name: GitHubActions-Backend-${{ github.run_id }}
           aws-region: "us-east-1"
+      # create bucket S3
       - name: Create S3
         run: |
           aws s3api create-bucket --bucket test-GithubBucket-2026 --region us-east-1
