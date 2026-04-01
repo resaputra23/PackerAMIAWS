@@ -1,0 +1,40 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Testing Deploymen with OIDC
+
+# Controls when the workflow will run
+on:
+  # Triggers untuk "main"
+  push:
+    branches: [ "main" ]  
+  # untuk test trigger manual
+  workflow_dispatch:
+# karena kita menggunaka OIDC authentication
+permissions: 
+ id-token: write
+ contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+ 
+    steps:
+      
+      - uses: actions/checkout@v4
+
+      # Runs a single command using the runners shell
+      - name: Display timestam of deployment
+        run: |     
+         echo "// Updating timestamp for deployment on $(date)" >> js/script.js
+         echo "// Deployment ID: ${{ github.run_id }}" >> js/script.js
+
+      - name: Configure AWS credential dengan  OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          # role yg sudah kita buat, kita copy ARN valuenya
+          role-to-assume: arn:aws:iam::746669222274:role/GitHubOIDCRoleS3
+          role-session-name: GitHubActions-Backend-${{ github.run_id }}
+          aws-region: "us-east-1"
+      - name: Create S3
+        run: |
+          aws s3api create-bucket --bucket test-GithubBucket-2026 --region us-east-1
